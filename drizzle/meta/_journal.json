@@ -8,6 +8,20 @@
       "when": 1789641386341,
       "tag": "0000_create-practice-profiles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789646201567,
+      "tag": "0001_add-auth-tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789650615064,
+      "tag": "0002_add-profiles-table",
+      "breakpoints": true
     }
   ]
 }

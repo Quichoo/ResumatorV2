@@ -7,3 +7,6 @@ export const practiceProfiles = pgTable("practice_profiles", {
     .defaultNow()
     .notNull(),
 });
+
+export * from "./auth-schema";
+export * from "./profile-schema";

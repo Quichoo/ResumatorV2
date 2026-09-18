@@ -1,12 +1,8 @@
-import HomeIntro from "@/components/home/HomeIntro";
+import { redirect } from "next/navigation";
+import { requireUser } from "@/lib/auth-session";
 
-export default function Home() {
-  return (
-    <main>
-      <HomeIntro
-        title="Resumator"
-        description="Tailor your resume to each opportunity using your skills, projects, and experience."
-      />
-    </main>
-  );
+export default async function Home() {
+  await requireUser();
+
+  redirect("/profile");
 }
