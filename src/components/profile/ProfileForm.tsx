@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { Alert, Button, Group, Stack } from "@mantine/core";
+import { useCallback, useState, type FormEvent } from "react";
+import { Button, Group, Stack } from "@mantine/core";
 import ProfileFields from "@/components/profile/ProfileFields";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import SuccessMessage from "@/components/ui/SuccessMessage";
 import { saveProfile } from "@/lib/actions/profile";
 import type { ProfileFormValues, SaveProfileResult } from "@/types/profile";
 
@@ -14,6 +15,10 @@ type ProfileFormProps = {
 export default function ProfileForm({ initialValues }: ProfileFormProps) {
   const [isPending, setIsPending] = useState(false);
   const [result, setResult] = useState<SaveProfileResult | null>(null);
+
+  const clearSuccessMessage = useCallback(() => {
+    setResult((current) => (current?.success ? null : current));
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,19 +50,16 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
     <form
       method="post"
       onSubmit={handleSubmit}
-      onChange={() => {
-        if (result?.success) {
-          setResult(null);
-        }
-      }}
+      onChange={clearSuccessMessage}
       aria-busy={isPending}
       noValidate
     >
       <Stack gap="lg">
         {result?.success && (
-          <Alert color="teal" role="status">
-            {result.message}
-          </Alert>
+          <SuccessMessage
+            message={result.message}
+            onClose={clearSuccessMessage}
+          />
         )}
 
         {result && !result.success && (

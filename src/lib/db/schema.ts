@@ -10,3 +10,4 @@ export const practiceProfiles = pgTable("practice_profiles", {
 
 export * from "./auth-schema";
 export * from "./profile-schema";
+export * from "./work-experience-schema";
