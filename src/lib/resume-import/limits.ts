@@ -1,0 +1,4 @@
+export const MAX_RESUME_FILE_BYTES = 2 * 1024 * 1024;
+export const MAX_RESUME_PAGES = 10;
+export const MAX_RESUME_TEXT_LENGTH = 50_000;
+export const RESUME_PARSE_TIMEOUT_MS = 15_000;

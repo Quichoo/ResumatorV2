@@ -13,13 +13,18 @@
     "@mantine/core": "^9.6.1",
     "@mantine/hooks": "^9.6.1",
     "@neondatabase/serverless": "^1.1.0",
+    "@openrouter/ai-sdk-provider": "^3.1.0",
     "@tabler/icons-react": "^3.46.0",
+    "@vercel/connect": "2.2.0",
+    "ai": "^7.0.105",
     "better-auth": "^1.7.5",
     "drizzle-orm": "^0.45.2",
+    "eve": "^0.63.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
+    "unpdf": "^1.8.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -35,5 +40,8 @@
     "postcss-simple-vars": "^7.0.1",
     "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

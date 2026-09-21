@@ -11,3 +11,7 @@ export const practiceProfiles = pgTable("practice_profiles", {
 export * from "./auth-schema";
 export * from "./profile-schema";
 export * from "./work-experience-schema";
+export * from "./education-schema";
+export * from "./project-schema";
+export * from "./skill-schema";
+export * from "./action-rate-limit-schema";

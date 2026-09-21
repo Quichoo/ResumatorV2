@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Badge, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { Badge, Text } from "@mantine/core";
+import RecordCard from "@/components/ui/RecordCard";
 import { formatMonth } from "@/lib/utils/format-month";
 import type { WorkExperience } from "@/types/work-experience";
 
@@ -17,54 +18,33 @@ export default function WorkExperienceCard({
     : "Present";
 
   return (
-    <Paper component="article" withBorder p="lg" radius="md">
-      <Stack gap="sm">
-        <Group justify="space-between" align="flex-start">
-          <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
-            <Title order={3} size="h4" style={{ overflowWrap: "anywhere" }}>
-              {experience.jobTitle}
-            </Title>
+    <RecordCard
+      title={experience.jobTitle}
+      subtitle={experience.companyName}
+      badge={
+        experience.isCurrent ? (
+          <Badge color="blue" variant="light">
+            Current
+          </Badge>
+        ) : undefined
+      }
+      actions={actions}
+    >
+      <Text size="sm" c="dimmed">
+        {formatMonth(experience.startDate)} – {endLabel}
+      </Text>
 
-            <Text fw={500} style={{ overflowWrap: "anywhere" }}>
-              {experience.companyName}
-            </Text>
-          </Stack>
-
-          {experience.isCurrent && (
-            <Badge color="blue" variant="light">
-              Current
-            </Badge>
-          )}
-        </Group>
-
+      {experience.location && (
         <Text size="sm" c="dimmed">
-          {formatMonth(experience.startDate)} – {endLabel}
+          {experience.location}
         </Text>
+      )}
 
-        {experience.location && (
-          <Text size="sm" c="dimmed">
-            {experience.location}
-          </Text>
-        )}
-
-        {experience.description && (
-          <Text
-            size="sm"
-            style={{
-              whiteSpace: "pre-wrap",
-              overflowWrap: "anywhere",
-            }}
-          >
-            {experience.description}
-          </Text>
-        )}
-
-        {actions && (
-          <Group justify="flex-end" align="flex-start">
-            {actions}
-          </Group>
-        )}
-      </Stack>
-    </Paper>
+      {experience.description && (
+        <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+          {experience.description}
+        </Text>
+      )}
+    </RecordCard>
   );
 }

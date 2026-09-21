@@ -1,46 +1,31 @@
 "use client";
 
-import { useCallback, useState, type FormEvent } from "react";
+import type { FormEvent } from "react";
 import { Button, Group, Stack } from "@mantine/core";
 import ProfileFields from "@/components/profile/ProfileFields";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import SuccessMessage from "@/components/ui/SuccessMessage";
+import { useServerAction } from "@/hooks/useServerAction";
 import { saveProfile } from "@/lib/actions/profile";
-import type { ProfileFormValues, SaveProfileResult } from "@/types/profile";
+import type { ProfileFormValues } from "@/types/profile";
 
 type ProfileFormProps = {
   initialValues: ProfileFormValues;
 };
 
 export default function ProfileForm({ initialValues }: ProfileFormProps) {
-  const [isPending, setIsPending] = useState(false);
-  const [result, setResult] = useState<SaveProfileResult | null>(null);
-
-  const clearSuccessMessage = useCallback(() => {
-    setResult((current) => (current?.success ? null : current));
-  }, []);
+  const { execute, isPending, result, clearSuccess } = useServerAction(
+    saveProfile,
+    {
+      errorMessage: "Unable to save your profile. Please try again.",
+    },
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (isPending) return;
-
     const formData = new FormData(event.currentTarget);
-
-    setIsPending(true);
-    setResult(null);
-
-    try {
-      const response = await saveProfile(formData);
-      setResult(response);
-    } catch {
-      setResult({
-        success: false,
-        message: "Unable to complete the request. Please try again.",
-      });
-    } finally {
-      setIsPending(false);
-    }
+    await execute(formData);
   }
 
   const fieldErrors =
@@ -50,16 +35,13 @@ export default function ProfileForm({ initialValues }: ProfileFormProps) {
     <form
       method="post"
       onSubmit={handleSubmit}
-      onChange={clearSuccessMessage}
+      onChange={clearSuccess}
       aria-busy={isPending}
       noValidate
     >
       <Stack gap="lg">
         {result?.success && (
-          <SuccessMessage
-            message={result.message}
-            onClose={clearSuccessMessage}
-          />
+          <SuccessMessage message={result.message} onClose={clearSuccess} />
         )}
 
         {result && !result.success && (
