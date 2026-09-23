@@ -15,3 +15,4 @@ export * from "./education-schema";
 export * from "./project-schema";
 export * from "./skill-schema";
 export * from "./action-rate-limit-schema";
+export * from "./resume-import-schema";

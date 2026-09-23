@@ -16,6 +16,7 @@ type ProfileFieldsProps = {
   values: ProfileFormValues;
   errors?: ProfileFieldErrors;
   disabled?: boolean;
+  onValueChange?: (field: keyof ProfileFormValues, value: string) => void;
 };
 
 const fields = [
@@ -81,6 +82,7 @@ export default function ProfileFields({
   values,
   errors,
   disabled = false,
+  onValueChange,
 }: ProfileFieldsProps) {
   return (
     <Stack gap={22}>
@@ -89,7 +91,15 @@ export default function ProfileFields({
           <TextInput
             key={field.name}
             {...field}
-            defaultValue={values[field.name] ?? ""}
+            {...(onValueChange
+              ? {
+                  value: values[field.name] ?? "",
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+                    onValueChange(field.name, event.currentTarget.value),
+                }
+              : {
+                  defaultValue: values[field.name] ?? "",
+                })}
             error={errors?.[field.name]?.[0]}
             disabled={disabled}
             leftSection={<Icon size={18} stroke={1.7} aria-hidden="true" />}
@@ -110,7 +120,15 @@ export default function ProfileFields({
         label="Professional summary"
         description="Introduce your experience, strengths, and career focus."
         placeholder="Write a short introduction about yourself."
-        defaultValue={values.summary ?? ""}
+        {...(onValueChange
+          ? {
+              value: values.summary ?? "",
+              onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onValueChange("summary", event.currentTarget.value),
+            }
+          : {
+              defaultValue: values.summary ?? "",
+            })}
         error={errors?.summary?.[0]}
         disabled={disabled}
         maxLength={5000}

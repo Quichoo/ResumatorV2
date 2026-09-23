@@ -5,13 +5,21 @@ import {
   Textarea,
   TextInput,
 } from "@mantine/core";
-import type { EducationEntry, EducationFieldErrors } from "@/types/education";
+import type { ChangeEvent } from "react";
+import type {
+  EducationEntry,
+  EducationFieldErrors,
+  EducationTextField,
+} from "@/types/education";
 
 type EducationFieldsProps = {
   entry?: EducationEntry;
   fieldErrors?: EducationFieldErrors;
   isCurrent: boolean;
   onIsCurrentChange: (checked: boolean) => void;
+  values?: Partial<Record<EducationTextField, string>>;
+  onValueChange?: (field: EducationTextField, value: string) => void;
+  hideCurrentCheckbox?: boolean;
 };
 
 export default function EducationFields({
@@ -19,14 +27,32 @@ export default function EducationFields({
   fieldErrors = {},
   isCurrent,
   onIsCurrentChange,
+  values,
+  onValueChange,
+  hideCurrentCheckbox = false,
 }: EducationFieldsProps) {
+  function inputProps(field: EducationTextField) {
+    if (onValueChange) {
+      return {
+        value: values?.[field] ?? "",
+        onChange: (
+          event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => onValueChange(field, event.currentTarget.value),
+      };
+    }
+
+    return {
+      defaultValue: String(entry?.[field] ?? ""),
+    };
+  }
+
   return (
     <Stack gap="md">
       <TextInput
         name="schoolName"
         label="School or institution"
         placeholder="Enter your school name"
-        defaultValue={entry?.schoolName ?? ""}
+        {...inputProps("schoolName")}
         error={fieldErrors.schoolName?.join(" ")}
         maxLength={160}
         required
@@ -37,7 +63,7 @@ export default function EducationFields({
         name="degree"
         label="Degree, qualification, or program"
         placeholder="Bachelor of Science"
-        defaultValue={entry?.degree ?? ""}
+        {...inputProps("degree")}
         error={fieldErrors.degree?.join(" ")}
         maxLength={160}
         required
@@ -47,20 +73,22 @@ export default function EducationFields({
         name="fieldOfStudy"
         label="Field of study"
         placeholder="Information Technology"
-        defaultValue={entry?.fieldOfStudy ?? ""}
+        {...inputProps("fieldOfStudy")}
         error={fieldErrors.fieldOfStudy?.join(" ")}
         maxLength={160}
       />
 
-      <Checkbox
-        name="isCurrent"
-        value="on"
-        label="I currently study here"
-        checked={isCurrent}
-        onChange={(event) => onIsCurrentChange(event.currentTarget.checked)}
-        error={fieldErrors.isCurrent?.join(" ")}
-        color="blue.8"
-      />
+      {!hideCurrentCheckbox && (
+        <Checkbox
+          name="isCurrent"
+          value="on"
+          label="I currently study here"
+          checked={isCurrent}
+          onChange={(event) => onIsCurrentChange(event.currentTarget.checked)}
+          error={fieldErrors.isCurrent?.join(" ")}
+          color="blue.8"
+        />
+      )}
 
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
         <TextInput
@@ -69,7 +97,7 @@ export default function EducationFields({
           description="Optional"
           placeholder="2020"
           inputMode="numeric"
-          defaultValue={entry?.startYear?.toString() ?? ""}
+          {...inputProps("startYear")}
           error={fieldErrors.startYear?.join(" ")}
         />
 
@@ -81,7 +109,7 @@ export default function EducationFields({
           }
           placeholder="2024"
           inputMode="numeric"
-          defaultValue={entry?.endYear?.toString() ?? ""}
+          {...inputProps("endYear")}
           error={fieldErrors.endYear?.join(" ")}
           disabled={isCurrent}
         />
@@ -92,7 +120,7 @@ export default function EducationFields({
         label="Additional details"
         description="Include relevant coursework, honors, or other details."
         placeholder="Add details relevant to your education..."
-        defaultValue={entry?.description ?? ""}
+        {...inputProps("description")}
         error={fieldErrors.description?.join(" ")}
         maxLength={5000}
         minRows={4}

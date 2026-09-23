@@ -9,6 +9,7 @@ import Loader from "@/components/ui/Loader";
 import { useServerAction } from "@/hooks/useServerAction";
 import { extractResumeText } from "@/lib/actions/resume-import";
 import { getResumeFileError } from "@/lib/validations/resume-file";
+import ResumeDraftExtractor from "@/components/resume-import/ResumeDraftExtractor";
 
 export default function ResumeUploadForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -100,6 +101,11 @@ export default function ResumeUploadForm() {
       {result?.success && (
         <Stack gap="md">
           <ResumeTextPreview preview={result.data} />
+
+          <ResumeDraftExtractor
+            key={result.data.text}
+            text={result.data.text}
+          />
 
           <Group justify="flex-end">
             <Button

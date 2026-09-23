@@ -21,3 +21,8 @@ export type WorkExperienceActionResult =
       message: string;
       fieldErrors?: WorkExperienceFieldErrors;
     };
+
+export type WorkExperienceTextField = Exclude<
+  keyof WorkExperienceFormValues,
+  "isCurrent"
+>;

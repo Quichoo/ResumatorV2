@@ -13,6 +13,11 @@ export default defineAgent({
         completion: 0,
       },
     },
+    extraBody: {
+      reasoning: {
+        enabled: false,
+      },
+    },
   }),
   modelContextWindowTokens: 262_144,
   defaultTools: false,

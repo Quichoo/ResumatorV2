@@ -1,8 +1,11 @@
+"use client";
+
 import { useState, type FormEvent, type ReactNode } from "react";
-import { Button, Modal, Stack } from "@mantine/core";
+import { Modal, Stack } from "@mantine/core";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import FormActions from "@/components/ui/FormActions";
 import Loader from "@/components/ui/Loader";
+import RecordActionButton from "@/components/ui/RecordActionButton";
 import SuccessMessage from "@/components/ui/SuccessMessage";
 import { useServerAction } from "@/hooks/useServerAction";
 import type { FieldErrors, FormActionResult } from "@/types/action-result";
@@ -12,6 +15,7 @@ type RecordEditorProps<TField extends string> = {
   triggerLabel: string;
   triggerAriaLabel?: string;
   triggerIcon?: ReactNode;
+  compact?: boolean;
   submitLabel: string;
   pendingLabel: string;
   errorTitle: string;
@@ -28,6 +32,7 @@ export default function RecordEditor<TField extends string>({
   triggerLabel,
   triggerAriaLabel,
   triggerIcon,
+  compact = false,
   submitLabel,
   pendingLabel,
   errorTitle,
@@ -56,6 +61,8 @@ export default function RecordEditor<TField extends string>({
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (isPending) return;
+
     const formData = new FormData(event.currentTarget);
     const response = await execute(formData);
 
@@ -70,18 +77,14 @@ export default function RecordEditor<TField extends string>({
   return (
     <>
       <Stack gap={6} align="flex-end">
-        <Button
-          type="button"
-          variant="filled"
-          color="blue.8"
-          c={isPending ? undefined : "white"}
-          leftSection={triggerIcon}
-          aria-label={triggerAriaLabel}
+        <RecordActionButton
+          label={triggerLabel}
+          ariaLabel={triggerAriaLabel}
+          icon={triggerIcon}
+          compact={compact}
           onClick={openEditor}
           disabled={isPending}
-        >
-          {triggerLabel}
-        </Button>
+        />
 
         {result?.success && (
           <SuccessMessage message={result.message} onClose={clearSuccess} />

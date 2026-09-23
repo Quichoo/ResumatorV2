@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Button } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import RecordActionButton from "@/components/ui/RecordActionButton";
 import { useServerAction } from "@/hooks/useServerAction";
 
 type DeleteRecordButtonProps = {
@@ -14,6 +14,7 @@ type DeleteRecordButtonProps = {
     success: boolean;
     message: string;
   }>;
+  compact?: boolean;
   triggerLabel?: string;
   confirmLabel?: string;
   pendingLabel?: string;
@@ -25,9 +26,10 @@ export default function DeleteRecordButton({
   ariaLabel,
   children,
   deleteAction,
+  compact = false,
   triggerLabel = "Delete",
   confirmLabel = "Delete",
-  pendingLabel = "Deleting…",
+  pendingLabel = "Deleting...",
   errorMessage = "Unable to delete this entry. Please try again.",
 }: DeleteRecordButtonProps) {
   const [opened, setOpened] = useState(false);
@@ -51,6 +53,8 @@ export default function DeleteRecordButton({
   }
 
   async function handleConfirm() {
+    if (isPending) return;
+
     const response = await execute();
 
     if (response?.success) {
@@ -62,18 +66,15 @@ export default function DeleteRecordButton({
 
   return (
     <>
-      <Button
-        type="button"
-        variant="filled"
+      <RecordActionButton
+        label={triggerLabel}
+        ariaLabel={ariaLabel}
+        icon={<IconTrash size={16} aria-hidden="true" />}
+        compact={compact}
         color="red.9"
-        c={isPending ? undefined : "white"}
-        leftSection={<IconTrash size={16} aria-hidden="true" />}
-        aria-label={ariaLabel}
         onClick={openDialog}
         disabled={isPending}
-      >
-        {triggerLabel}
-      </Button>
+      />
 
       <ConfirmDialog
         opened={opened}

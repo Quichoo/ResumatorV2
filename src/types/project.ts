@@ -11,3 +11,15 @@ export type Project = z.output<typeof projectSchema> & {
 export type ProjectFieldErrors = FieldErrors<keyof ProjectFormValues>;
 
 export type ProjectActionResult = FormActionResult<keyof ProjectFormValues>;
+
+export type ProjectReviewEntry = Omit<
+  Required<ProjectFormValues>,
+  "bulletPoints"
+> & {
+  bulletPointsText: string;
+};
+
+export type ProjectTextField = Exclude<
+  keyof ProjectReviewEntry,
+  "technologies"
+>;

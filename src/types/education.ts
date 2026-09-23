@@ -21,3 +21,13 @@ export type EducationActionResult =
       message: string;
       fieldErrors?: EducationFieldErrors;
     };
+
+export type EducationTextField = Exclude<
+  keyof EducationFormValues,
+  "isCurrent"
+>;
+
+export type EducationReviewEntry = Record<EducationTextField, string> & {
+  isCurrent: boolean | null;
+  dateText: string | null;
+};

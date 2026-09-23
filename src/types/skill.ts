@@ -11,3 +11,5 @@ export type Skill = z.output<typeof skillSchema> & {
 export type SkillFieldErrors = FieldErrors<keyof SkillFormValues>;
 
 export type SkillActionResult = FormActionResult<keyof SkillFormValues>;
+
+export type SkillReviewEntry = Required<SkillFormValues>;

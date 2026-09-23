@@ -8,9 +8,13 @@ import type { Skill, SkillFormValues } from "@/types/skill";
 
 type SkillEditorProps = {
   skill?: Skill;
+  compact?: boolean;
 };
 
-export default function SkillEditor({ skill }: SkillEditorProps) {
+export default function SkillEditor({
+  skill,
+  compact = false,
+}: SkillEditorProps) {
   const TriggerIcon = skill ? IconPencil : IconPlus;
   const saveAction = saveSkill.bind(null, skill?.id ?? null);
 
@@ -20,8 +24,9 @@ export default function SkillEditor({ skill }: SkillEditorProps) {
       triggerLabel={skill ? "Edit" : "Add skill"}
       triggerAriaLabel={skill ? `Edit ${skill.name}` : "Add skill"}
       triggerIcon={<TriggerIcon size={16} aria-hidden="true" />}
+      compact={compact}
       submitLabel={skill ? "Save changes" : "Add skill"}
-      pendingLabel="Saving skill…"
+      pendingLabel="Saving skill..."
       errorTitle="Skill not saved"
       errorMessage="Unable to save this skill. Please try again."
       saveAction={saveAction}

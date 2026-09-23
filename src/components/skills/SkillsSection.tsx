@@ -10,7 +10,7 @@ import {
 import DeleteSkillButton from "@/components/skills/DeleteSkillButton";
 import SkillEditor from "@/components/skills/SkillEditor";
 import ErrorMessage from "@/components/ui/ErrorMessage";
-import RecordCard from "@/components/ui/RecordCard";
+import RecordRow from "@/components/ui/RecordRow";
 import { getSkills } from "@/lib/queries/skill";
 
 export default async function SkillsSection() {
@@ -47,16 +47,16 @@ export default async function SkillsSection() {
           </Text>
         </Paper>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2 }}>
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs" verticalSpacing="xs">
           {result.skills.map((skill) => (
-            <RecordCard
+            <RecordRow
               key={skill.id}
               title={skill.name}
               subtitle={skill.category ?? undefined}
               actions={
                 <>
-                  <SkillEditor skill={skill} />
-                  <DeleteSkillButton skill={skill} />
+                  <SkillEditor skill={skill} compact />
+                  <DeleteSkillButton skill={skill} compact />
                 </>
               }
             />

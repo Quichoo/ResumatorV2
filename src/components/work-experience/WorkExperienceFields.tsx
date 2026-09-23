@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import {
   Checkbox,
   SimpleGrid,
@@ -8,6 +9,7 @@ import {
 import type {
   WorkExperience,
   WorkExperienceFieldErrors,
+  WorkExperienceTextField,
 } from "@/types/work-experience";
 
 type WorkExperienceFieldsProps = {
@@ -15,6 +17,9 @@ type WorkExperienceFieldsProps = {
   fieldErrors?: WorkExperienceFieldErrors;
   isCurrent: boolean;
   onIsCurrentChange: (checked: boolean) => void;
+  values?: Partial<Record<WorkExperienceTextField, string | null>>;
+  onValueChange?: (field: WorkExperienceTextField, value: string) => void;
+  hideCurrentCheckbox?: boolean;
 };
 
 export default function WorkExperienceFields({
@@ -22,7 +27,30 @@ export default function WorkExperienceFields({
   fieldErrors = {},
   isCurrent,
   onIsCurrentChange,
+  values,
+  onValueChange,
+  hideCurrentCheckbox = false,
 }: WorkExperienceFieldsProps) {
+  function inputProps(field: WorkExperienceTextField) {
+    if (onValueChange) {
+      return {
+        value: values?.[field] ?? "",
+        onChange: (
+          event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => onValueChange(field, event.currentTarget.value),
+      };
+    }
+
+    const value = experience?.[field] ?? "";
+
+    return {
+      defaultValue:
+        field === "startDate" || field === "endDate"
+          ? value.slice(0, 7)
+          : value,
+    };
+  }
+
   return (
     <Stack gap="md">
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
@@ -30,7 +58,7 @@ export default function WorkExperienceFields({
           name="jobTitle"
           label="Job title"
           placeholder="Frontend Developer"
-          defaultValue={experience?.jobTitle ?? ""}
+          {...inputProps("jobTitle")}
           error={fieldErrors.jobTitle?.join(" ")}
           maxLength={120}
           required
@@ -41,7 +69,7 @@ export default function WorkExperienceFields({
           name="companyName"
           label="Company or organization"
           placeholder="Company name"
-          defaultValue={experience?.companyName ?? ""}
+          {...inputProps("companyName")}
           error={fieldErrors.companyName?.join(" ")}
           maxLength={160}
           required
@@ -52,27 +80,29 @@ export default function WorkExperienceFields({
         name="location"
         label="Location"
         placeholder="Pampanga, Philippines or Remote"
-        defaultValue={experience?.location ?? ""}
+        {...inputProps("location")}
         error={fieldErrors.location?.join(" ")}
         maxLength={120}
       />
 
-      <Checkbox
-        name="isCurrent"
-        value="on"
-        label="I currently work here"
-        checked={isCurrent}
-        onChange={(event) => onIsCurrentChange(event.currentTarget.checked)}
-        error={fieldErrors.isCurrent?.join(" ")}
-        color="blue.8"
-      />
+      {!hideCurrentCheckbox && (
+        <Checkbox
+          name="isCurrent"
+          value="on"
+          label="I currently work here"
+          checked={isCurrent}
+          onChange={(event) => onIsCurrentChange(event.currentTarget.checked)}
+          error={fieldErrors.isCurrent?.join(" ")}
+          color="blue.8"
+        />
+      )}
 
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
         <TextInput
           name="startDate"
           type="month"
           label="Start month"
-          defaultValue={experience?.startDate.slice(0, 7) ?? ""}
+          {...inputProps("startDate")}
           error={fieldErrors.startDate?.join(" ")}
           required
         />
@@ -81,7 +111,7 @@ export default function WorkExperienceFields({
           name="endDate"
           type="month"
           label="End month"
-          defaultValue={experience?.endDate?.slice(0, 7) ?? ""}
+          {...inputProps("endDate")}
           description={isCurrent ? "Your resume will show Present." : undefined}
           error={fieldErrors.endDate?.join(" ")}
           disabled={isCurrent}
@@ -94,7 +124,7 @@ export default function WorkExperienceFields({
         label="Responsibilities and achievements"
         description="Describe your contributions and any results you achieved."
         placeholder="Built responsive interfaces using React..."
-        defaultValue={experience?.description ?? ""}
+        {...inputProps("description")}
         error={fieldErrors.description?.join(" ")}
         maxLength={5000}
         minRows={4}
