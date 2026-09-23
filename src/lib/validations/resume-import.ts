@@ -4,6 +4,7 @@ import { workExperienceSchema } from "@/lib/validations/work-experience";
 import { educationSchema } from "@/lib/validations/education";
 import { projectSchema } from "@/lib/validations/project";
 import { skillSchema } from "@/lib/validations/skill";
+import { certificationSchema } from "@/lib/validations/certification";
 
 export const resumeImportSchema = z
   .strictObject({
@@ -24,6 +25,11 @@ export const resumeImportSchema = z
       .max(50, "Import up to 50 projects at once."),
 
     skills: z.array(skillSchema).max(200, "Import up to 200 skills at once."),
+
+    certifications: z
+      .array(certificationSchema)
+      .max(50, "Import up to 50 certifications or courses at once.")
+      .default([]),
   })
   .superRefine((values, context) => {
     const hasSelection =
@@ -31,7 +37,8 @@ export const resumeImportSchema = z
       values.workExperiences.length > 0 ||
       values.educationEntries.length > 0 ||
       values.projects.length > 0 ||
-      values.skills.length > 0;
+      values.skills.length > 0 ||
+      values.certifications.length > 0;
 
     if (!hasSelection) {
       context.addIssue({

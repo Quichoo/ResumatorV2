@@ -8,6 +8,7 @@ import ResumeDraftSummary from "@/components/resume-import/ResumeDraftSummary";
 import ResumeImportControls from "@/components/resume-import/ResumeImportControls";
 import SkillsDraftSection from "@/components/resume-import/SkillsDraftSection";
 import WorkExperienceDraftSection from "@/components/resume-import/WorkExperienceDraftSection";
+import CertificationsDraftSection from "@/components/resume-import/CertificationsDraftSection";
 import ImportSelectionCard from "@/components/ui/ImportSelectionCard";
 import { useResumeDraftReview } from "@/hooks/useResumeDraftReview";
 import { useResumeImport } from "@/hooks/useResumeImport";
@@ -28,7 +29,8 @@ export default function ResumeDraftReview({
     review.work.selected.some(Boolean) ||
     review.education.selected.some(Boolean) ||
     review.projects.selected.some(Boolean) ||
-    review.skills.selected.some(Boolean);
+    review.skills.selected.some(Boolean) ||
+    review.certifications.selected.some(Boolean);
 
   return (
     <Stack gap="lg">
@@ -66,6 +68,7 @@ export default function ResumeDraftReview({
           <EducationDraftSection {...review.education} />
           <ProjectDraftSection {...review.projects} />
           <SkillsDraftSection {...review.skills} />
+          <CertificationsDraftSection {...review.certifications} />
         </>
       )}
 

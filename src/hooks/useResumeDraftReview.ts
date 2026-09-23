@@ -5,6 +5,7 @@ import { useSelectableEntries } from "@/hooks/useSelectableEntries";
 import type { EducationReviewEntry } from "@/types/education";
 import type { ProfileFormValues } from "@/types/profile";
 import type { ProjectReviewEntry } from "@/types/project";
+import type { CertificationReviewEntry } from "@/types/certification";
 import type {
   ProfileDraft,
   ResumeDraft,
@@ -63,6 +64,17 @@ export function useResumeDraftReview(initialDraft: ResumeDraft) {
     summary: profile.summary ?? "",
   };
 
+  const certifications = useSelectableEntries<CertificationReviewEntry>(() =>
+    initialDraft.certifications.map((entry) => ({
+      name: entry.name ?? "",
+      issuer: entry.issuer ?? "",
+      issueYear: entry.issueYear?.toString() ?? "",
+      credentialId: entry.credentialId ?? "",
+      credentialUrl: entry.credentialUrl ?? "",
+      description: entry.description ?? "",
+    })),
+  );
+
   function updateProfile(field: keyof ProfileFormValues, value: string) {
     setProfile((current) => ({
       ...current,
@@ -115,6 +127,10 @@ export function useResumeDraftReview(initialDraft: ResumeDraft) {
         .map(prepareProjectReview),
 
       skills: skills.entries.filter((_, index) => skills.selected[index]),
+
+      certifications: certifications.entries.filter(
+        (_, index) => certifications.selected[index],
+      ),
     };
   }
 
@@ -128,6 +144,7 @@ export function useResumeDraftReview(initialDraft: ResumeDraft) {
     education,
     projects,
     skills,
+    certifications,
     getImportContent,
   };
 }

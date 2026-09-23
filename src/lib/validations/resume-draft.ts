@@ -58,6 +58,17 @@ const skillDraftSchema = z.strictObject({
   category: nullableText(150),
 });
 
+const certificationDraftSchema = z
+  .object({
+    name: z.string().trim().min(1).max(200).nullable(),
+    issuer: z.string().trim().min(1).max(160).nullable(),
+    issueYear: z.number().int().min(1000).max(9999).nullable(),
+    credentialId: z.string().trim().min(1).max(200).nullable(),
+    credentialUrl: z.string().trim().min(1).max(2048).nullable(),
+    description: z.string().trim().min(1).max(5000).nullable(),
+  })
+  .strict();
+
 export const resumeDraftSchema = z.strictObject({
   profile: profileDraftSchema,
   workExperiences: z.array(workExperienceDraftSchema).max(50),
@@ -65,4 +76,5 @@ export const resumeDraftSchema = z.strictObject({
   projects: z.array(projectDraftSchema).max(50),
   skills: z.array(skillDraftSchema).max(200),
   warnings: z.array(z.string().trim().min(1).max(1000)).max(100),
+  certifications: z.array(certificationDraftSchema).max(50),
 });

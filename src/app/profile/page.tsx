@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Divider } from "@mantine/core";
+import { getProfilePageData } from "@/lib/queries/profile";
+
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfileLayout from "@/components/profile/ProfileLayout";
 import Loader from "@/components/ui/Loader";
 import WorkExperienceSection from "@/components/work-experience/WorkExperienceSection";
-import { getProfilePageData } from "@/lib/queries/profile";
 import EducationSection from "@/components/education/EducationSection";
 import ProjectsSection from "@/components/projects/ProjectsSection";
 import SkillsSection from "@/components/skills/SkillsSection";
 import ResumeImportSection from "@/components/resume-import/ResumeImportSection";
+import CertificationsSection from "@/components/certifications/CertificationsSection";
 
 export const metadata: Metadata = {
   title: "Master Profile",
@@ -50,6 +52,12 @@ export default async function ProfilePage() {
 
       <Suspense fallback={<Loader label="Loading skills…" />}>
         <SkillsSection />
+      </Suspense>
+
+      <Divider my="xl" />
+
+      <Suspense fallback={<Loader label="Loading certifications..." />}>
+        <CertificationsSection />
       </Suspense>
     </ProfileLayout>
   );

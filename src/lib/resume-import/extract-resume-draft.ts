@@ -3,7 +3,7 @@ import "server-only";
 import type { ClientSession } from "eve/client";
 import { createEveClient } from "@/lib/eve/client";
 import { resumeDraftSchema } from "@/lib/validations/resume-draft";
-import { getDateWarnings } from "@/lib/resume-import/get-date-warnings";
+import { getDraftWarnings } from "@/lib/resume-import/get-draft-warnings";
 import type { ResumeDraft } from "@/types/resume-draft";
 
 const EXTRACTION_TIMEOUT_MS = 120_000;
@@ -64,12 +64,8 @@ export async function extractResumeDraft(text: string): Promise<ResumeDraft> {
 
     return {
       ...parsed.data,
-      warnings: [
-        ...new Set([
-          ...parsed.data.warnings,
-          ...getDateWarnings(parsed.data, currentDate),
-        ]),
-      ],
+      warnings: getDraftWarnings(parsed.data, currentDate),
+      sourceObservations: [...new Set(parsed.data.warnings)],
     };
   } catch (error) {
     if (signal.aborted) {

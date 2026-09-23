@@ -1,5 +1,6 @@
 import { Alert, Badge, Group, Paper, Stack, Text } from "@mantine/core";
 import type { ResumeDraft } from "@/types/resume-draft";
+import ResumeSourceObservations from "@/components/resume-import/ResumeSourceObservations";
 
 type ResumeDraftSummaryProps = {
   draft: ResumeDraft;
@@ -11,6 +12,10 @@ export default function ResumeDraftSummary({ draft }: ResumeDraftSummaryProps) {
     { label: "Education entries", count: draft.educationEntries.length },
     { label: "Projects", count: draft.projects.length },
     { label: "Skills", count: draft.skills.length },
+    {
+      label: "Certifications and courses",
+      count: draft.certifications.length,
+    },
   ];
 
   return (
@@ -73,6 +78,7 @@ export default function ResumeDraftSummary({ draft }: ResumeDraftSummaryProps) {
             </Stack>
           </Alert>
         )}
+        <ResumeSourceObservations observations={draft.sourceObservations} />
       </Stack>
     </Paper>
   );

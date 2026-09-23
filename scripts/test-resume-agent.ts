@@ -143,6 +143,19 @@ Prepared sample records for testing and documented common workflows.
 Checked responsive layouts and corrected issues affecting smaller screens.
 
 Project URL: https://example.com/pantrytrack
+
+CERTIFICATIONS AND COURSES
+
+Frontend Foundations
+Example Learning Academy
+Completed June 2024
+Credential ID: DEMO-2024-001
+Credential URL: https://example.com/credentials/demo-2024-001
+Instructor: Jordan Example
+
+Web Development Bootcamp 2023
+Example Online School
+Instructor: Taylor Example
 `.trim();
 
 async function main() {
@@ -173,9 +186,29 @@ ${fictionalResume}
 
     const result = await created.response.result();
 
+    const responseSeconds = (performance.now() - startedAt) / 1000;
+
+    console.log(`Response time: ${responseSeconds.toFixed(2)} seconds`);
+    console.log("Eve result status:", result.status);
+    console.log("Structured data present:", result.data !== undefined);
+
     if (result.status === "failed" || result.data === undefined) {
+      // Diagnostic output for this fictional-resume test only.
+      console.dir(result, {
+        depth: 6,
+        colors: false,
+        maxArrayLength: 20,
+        maxStringLength: 6000,
+      });
+
+      if (result.status === "failed") {
+        throw new Error(
+          "Eve reported a failed response. See the diagnostic result above.",
+        );
+      }
+
       throw new Error(
-        "Eve did not return a structured draft. Check the Eve terminal for details.",
+        "Eve returned without structured data. See the diagnostic result above.",
       );
     }
 

@@ -43,6 +43,7 @@ Include exactly these top-level keys:
 - educationEntries
 - projects
 - skills
+- certifications
 - warnings
 
 Include every field listed below for each object.
@@ -105,6 +106,22 @@ When isCurrent is true, endDate must be null.
 
 A missing end date alone does not establish current employment.
 
+A written month name and year provide enough information to normalize
+a date. Converting them to YYYY-MM is formatting, not inventing facts.
+
+Examples:
+
+- March 2025 → "2025-03"
+- February 2024 → "2024-02"
+- November 2023 or Nov 2023 → "2023-11"
+
+Preserve the original range in dateText AND populate the normalized
+startDate and endDate when their month and year are explicitly given.
+
+Before returning, check every work entry: if dateText contains an
+explicit month and year for a boundary, its corresponding normalized
+date must not be null. Present still means endDate is null.
+
 # Education
 
 Return educationEntries as an array of objects containing:
@@ -164,6 +181,49 @@ Do not infer proficiency levels or years of experience.
 
 Remove duplicate skill names, ignoring capitalization.
 
+# Certifications and courses
+
+Return certifications as an array of objects containing:
+
+- name: string or null
+- issuer: string or null
+- issueYear: integer or null
+- credentialId: string or null
+- credentialUrl: string or null
+- description: string or null
+
+Extract explicitly listed certifications, training, and courses.
+Do not present a course as a professional license or accredited
+certification unless the source explicitly says so.
+
+Use the named issuing organization or learning platform as issuer.
+Preserve a named instructor in description.
+
+Use issueYear only when an issue or completion year is explicitly
+associated with the entry.
+
+A year appearing in a course title is not evidence of completion.
+For example, "The Web Developer Bootcamp 2023" does not establish
+that the user completed it in 2023.
+
+Preserve credential IDs exactly as supplied.
+Extract credential URLs only when explicitly associated with the entry.
+Do not use the resume owner's LinkedIn or portfolio URL as a
+credential URL, and do not construct certificate links.
+
+Keep entries with missing names or issuers when they contain useful
+information, but add a warning that they need correction before saving.
+
+Do not warn solely because optional fields are missing.
+Use an empty array when no certifications or courses are listed.
+
+For certification entries, only name and issuer are required to save.
+issueYear, credentialId, credentialUrl, and description are optional.
+
+Do not generate warnings or suggest correction solely because those
+optional fields are missing. An entry with a name and issuer can be
+saved even when all optional fields are null.
+
 # Warnings
 
 Return warnings as an array of short, plain-language strings.
@@ -176,6 +236,12 @@ Identify the affected section or entry when reporting:
 - missing information required to save an entry.
 
 Use an empty array when there are no such issues.
+
+Do not warn about a missing optional education field such as
+fieldOfStudy, startYear, or endYear.
+
+Do not report dates as missing when they can be normalized from
+explicit month-and-year text in the source.
 
 # Review boundary
 

@@ -64,6 +64,20 @@
       "when": 1790133905556,
       "tag": "0008_add-resume-imports",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790139182896,
+      "tag": "0009_add-certifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790160428074,
+      "tag": "0010_add-resumes-table",
+      "breakpoints": true
     }
   ]
 }

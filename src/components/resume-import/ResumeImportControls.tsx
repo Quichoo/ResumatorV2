@@ -22,6 +22,7 @@ const sectionLabels: Record<string, string> = {
   educationEntries: "Selected education entry",
   projects: "Selected project",
   skills: "Selected skill",
+  certifications: "Selected certification or course",
 };
 
 function describeIssue(issue: ResumeImportIssue) {
@@ -85,8 +86,8 @@ export default function ResumeImportControls({
       )}
 
       <Text size="sm" c="dimmed">
-        Selected work experience, education, and projects will be added to your
-        profile. Existing matching skills will be kept.
+        Selected work experience, education, projects, and certifications will
+        be added to your profile. Existing matching skills will be kept.
       </Text>
 
       <Group justify="flex-end">

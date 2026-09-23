@@ -1,7 +1,9 @@
 import type { z } from "zod";
 import type { resumeDraftSchema } from "@/lib/validations/resume-draft";
 
-export type ResumeDraft = z.infer<typeof resumeDraftSchema>;
+export type ResumeDraft = z.infer<typeof resumeDraftSchema> & {
+  sourceObservations?: string[];
+};
 
 export type ProfileDraft = ResumeDraft["profile"];
 
@@ -23,3 +25,5 @@ export type ExtractResumeDraftResult =
       success: false;
       message: string;
     };
+
+export type CertificationDraft = ResumeDraft["certifications"][number];

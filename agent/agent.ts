@@ -14,6 +14,7 @@ export default defineAgent({
       },
     },
     extraBody: {
+      models: ["inclusionai/ling-3.0-flash-vl:free"],
       reasoning: {
         enabled: false,
       },

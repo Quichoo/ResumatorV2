@@ -11,6 +11,7 @@ import {
   resumeImports,
   skills,
   workExperiences,
+  certifications,
 } from "@/lib/db/schema";
 import type { ValidatedResumeImport } from "@/types/resume-import";
 
@@ -129,6 +130,17 @@ export async function saveValidatedImport(
           })),
         )
         .onConflictDoNothing(),
+    );
+  }
+
+  if (content.certifications.length > 0) {
+    statements.push(
+      db.insert(certifications).values(
+        content.certifications.map((entry) => ({
+          ...entry,
+          userId,
+        })),
+      ),
     );
   }
 
