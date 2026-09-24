@@ -42,3 +42,14 @@ export type GetResumesResult =
       success: false;
       message: string;
     };
+
+export type UpdateResumeResult =
+  | {
+      success: true;
+      message: string;
+    }
+  | {
+      success: false;
+      message: string;
+      fieldErrors?: ResumeFieldErrors;
+    };

@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Button, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
-
+import { useRouter } from "next/navigation";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { authClient } from "@/lib/auth-client";
 import { authOptions } from "@/lib/auth-options";
@@ -16,6 +16,8 @@ import {
 import classes from "./AuthLayout.module.css";
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const [isPending, setIsPending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +61,8 @@ export default function SignUpForm() {
       }
 
       setIsSuccess(true);
+      router.replace("/");
+      router.refresh();
     } catch {
       setError(
         "Unable to reach the server. Check your connection and try again.",

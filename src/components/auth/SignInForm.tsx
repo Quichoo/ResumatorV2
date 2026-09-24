@@ -48,7 +48,7 @@ export default function SignInForm() {
       }
 
       setIsSuccess(true);
-      router.replace("/profile");
+      router.replace("/");
       router.refresh();
     } catch {
       setError(
@@ -113,7 +113,7 @@ export default function SignInForm() {
           className={classes.submit}
           loading={isDisabled}
         >
-          {isSuccess ? "Opening your profile…" : "Sign in"}
+          {isSuccess ? "Opening your resumes..." : "Sign in"}
         </Button>
       </Stack>
     </form>
