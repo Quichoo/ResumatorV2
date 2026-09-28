@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { Client, type ClientSession } from "eve/client";
 import { resumeDraftSchema } from "../src/lib/validations/resume-draft";
 import type { ResumeDraft } from "../src/types/resume-draft";
+import { extractionInstructions } from "../src/lib/resume-prompts/extraction";
 
 config({ path: ".env.local" });
 
@@ -167,6 +168,9 @@ async function main() {
   try {
     const created = await client.sessions.create<ResumeDraft>({
       message: `
+      TASK: extract_resume
+
+${extractionInstructions}
 Extract a resume draft using the supplied output schema.
 
 Use only facts explicitly stated in the resume.

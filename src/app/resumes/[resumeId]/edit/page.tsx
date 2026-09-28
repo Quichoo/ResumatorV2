@@ -4,6 +4,9 @@ import { Paper } from "@mantine/core";
 import EditResumeForm from "@/components/resumes/EditResumeForm";
 import ResumesPageShell from "@/components/resumes/ResumesPageShell";
 import { getResumeById } from "@/lib/queries/resume";
+import GenerateResumeButton from "@/components/resumes/GenerateResumeButton";
+import GeneratedResumePreview from "@/components/resumes/GeneratedResumePreview";
+import { getLatestGeneratedResume } from "@/lib/queries/generated-resume";
 
 export const metadata: Metadata = {
   title: "Edit job details | Resumator",
@@ -19,6 +22,8 @@ export default async function EditResumePage({ params }: EditResumePageProps) {
 
   if (!resume) notFound();
 
+  const generatedResume = await getLatestGeneratedResume(resume.id);
+
   return (
     <ResumesPageShell
       title="Edit job details"
@@ -27,6 +32,10 @@ export default async function EditResumePage({ params }: EditResumePageProps) {
       <Paper withBorder p={{ base: "md", sm: "xl" }} radius="md">
         <EditResumeForm key={resume.id} resume={resume} />
       </Paper>
+      <GenerateResumeButton key={resume.id} resumeId={resume.id} />
+      {generatedResume && (
+        <GeneratedResumePreview resumeId={resumeId} resume={generatedResume} />
+      )}
     </ResumesPageShell>
   );
 }

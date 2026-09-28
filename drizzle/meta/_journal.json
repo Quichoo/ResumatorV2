@@ -78,6 +78,13 @@
       "when": 1790160428074,
       "tag": "0010_add-resumes-table",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790220872560,
+      "tag": "0011_add-resume-generations",
+      "breakpoints": true
     }
   ]
 }

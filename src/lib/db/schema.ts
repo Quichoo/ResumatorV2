@@ -18,3 +18,4 @@ export * from "./action-rate-limit-schema";
 export * from "./resume-import-schema";
 export * from "./certification-schema";
 export * from "./resume-schema";
+export * from "./resume-generation-schema";
