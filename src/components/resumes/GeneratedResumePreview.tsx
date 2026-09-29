@@ -1,6 +1,7 @@
 import { Paper, Stack, Text, Title } from "@mantine/core";
 import ResumeDocument from "@/components/resumes/ResumeDocument";
 import type { GeneratedResumeView } from "@/lib/queries/generated-resume";
+import DownloadResumeButton from "@/components/resumes/DownloadResumeButton";
 
 type GeneratedResumePreviewProps = {
   resume: GeneratedResumeView;
@@ -12,7 +13,7 @@ export default function GeneratedResumePreview({
   resumeId,
 }: GeneratedResumePreviewProps) {
   return (
-    <Stack gap="md">
+    <Stack id="generated-resume" gap="md" style={{ scrollMarginTop: 24 }}>
       <div>
         <Title order={2} size="h3">
           Generated draft
@@ -28,7 +29,7 @@ export default function GeneratedResumePreview({
           This preview uses the profile and job details saved when generated.
         </Text>
       </div>
-      <a href={`/api/resumes/${resumeId}/pdf`}>Download PDF</a>
+      <DownloadResumeButton resumeId={resumeId} />
       <Paper withBorder radius="md">
         <ResumeDocument resume={resume} />
       </Paper>

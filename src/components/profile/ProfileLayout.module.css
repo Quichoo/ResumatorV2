@@ -438,14 +438,30 @@
   }
 }
 
-.navigation {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
-  margin-bottom: 24px;
+.headerNavigation {
+  margin-right: auto;
 }
 
-.navigation [aria-current="page"] {
-  font-weight: 600;
+@media (max-width: 64em) {
+  .accountEmail {
+    display: none;
+  }
+}
+
+@media (max-width: 48em) {
+  .headerInner {
+    flex-wrap: wrap;
+    padding-block: 14px;
+    gap: 12px;
+  }
+
+  .headerNavigation {
+    order: 3;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .account {
+    margin-left: auto;
+  }
 }

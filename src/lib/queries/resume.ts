@@ -1,16 +1,26 @@
 import "server-only";
 
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
+import { z } from "zod";
 import { requireUser } from "@/lib/auth-session";
 import { db } from "@/lib/db";
 import { resumes } from "@/lib/db/resume-schema";
+import { resumeGenerations } from "@/lib/db/resume-generation-schema";
 import type { GetResumesResult, ResumeDetails } from "@/types/resume";
-import { z } from "zod";
 
 export async function getResumes(): Promise<GetResumesResult> {
   const user = await requireUser();
 
   try {
+    const completedGenerations = db
+      .select({
+        resumeId: resumeGenerations.resumeId,
+      })
+      .from(resumeGenerations)
+      .where(eq(resumeGenerations.status, "completed"))
+      .groupBy(resumeGenerations.resumeId)
+      .as("completed_generations");
+
     const rows = await db
       .select({
         id: resumes.id,
@@ -18,8 +28,15 @@ export async function getResumes(): Promise<GetResumesResult> {
         targetRole: resumes.targetRole,
         companyName: resumes.companyName,
         updatedAt: resumes.updatedAt,
+        hasGeneratedDraft: sql<boolean>`
+          ${completedGenerations.resumeId} IS NOT NULL
+        `,
       })
       .from(resumes)
+      .leftJoin(
+        completedGenerations,
+        eq(completedGenerations.resumeId, resumes.id),
+      )
       .where(eq(resumes.userId, user.id))
       .orderBy(desc(resumes.updatedAt), desc(resumes.id));
 
@@ -63,7 +80,9 @@ export async function getResumeById(
     .where(and(eq(resumes.id, resumeId), eq(resumes.userId, user.id)))
     .limit(1);
 
-  if (!resume) return null;
+  if (!resume) {
+    return null;
+  }
 
   return {
     ...resume,

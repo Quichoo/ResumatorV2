@@ -4,6 +4,7 @@ import ResumeList from "@/components/resumes/ResumeList";
 import ResumesPageShell from "@/components/resumes/ResumesPageShell";
 import { AppLinkButton } from "@/components/ui/AppLink";
 import Loader from "@/components/ui/Loader";
+import ResumeListSkeleton from "@/components/resumes/ResumeListSkeleton";
 import { requireUser } from "@/lib/auth-session";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default async function ResumesPage() {
       description="Keep your resume versions organized for each opportunity."
       action={<AppLinkButton href="/resumes/new">Create resume</AppLinkButton>}
     >
-      <Suspense fallback={<Loader label="Loading your resumes..." />}>
+      <Suspense fallback={<ResumeListSkeleton />}>
         <ResumeList />
       </Suspense>
     </ResumesPageShell>

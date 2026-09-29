@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
-import { Container, Group, Stack, Text, Title } from "@mantine/core";
-import { AppLink } from "@/components/ui/AppLink";
+import SignOutButton from "@/components/auth/SignOutButton";
+import AppNavigation from "@/components/ui/AppNavigation";
+import Brand from "@/components/ui/Brand";
+import classes from "./ResumesPageShell.module.css";
 
 type ResumesPageShellProps = {
   title: string;
@@ -16,24 +18,49 @@ export default function ResumesPageShell({
   action,
 }: ResumesPageShellProps) {
   return (
-    <Container component="main" size="md" py="xl">
-      <Stack gap="xl">
-        <Group component="nav" aria-label="Resume navigation" gap="lg">
-          <AppLink href="/resumes">My resumes</AppLink>
-          <AppLink href="/profile">Master profile</AppLink>
-        </Group>
+    <div className={classes.page}>
+      <div className={classes.background} aria-hidden="true" />
 
-        <Group justify="space-between" align="flex-start">
-          <Stack gap={6}>
-            <Title order={1}>{title}</Title>
-            <Text c="dimmed">{description}</Text>
-          </Stack>
+      <header className={classes.header}>
+        <div className={classes.headerInner}>
+          <Brand className={classes.brand} />
 
-          {action}
-        </Group>
+          <div className={classes.headerNavigation}>
+            <AppNavigation active="resumes" />
+          </div>
 
-        {children}
-      </Stack>
-    </Container>
+          <div className={classes.account}>
+            <SignOutButton
+              variant="outline"
+              className={classes.signOutButton}
+            />
+          </div>
+        </div>
+      </header>
+
+      <main className={classes.main}>
+        <div className={classes.hero}>
+          <div className={classes.intro}>
+            <p className={classes.eyebrow}>Your resumes. Your opportunities.</p>
+
+            <h1 className={classes.title}>
+              {title === "My resumes" ? (
+                <>
+                  My <span>resumes</span>
+                </>
+              ) : (
+                title
+              )}
+            </h1>
+
+            <p className={classes.description}>{description}</p>
+          </div>
+
+          {action && <div className={classes.action}>{action}</div>}
+        </div>
+
+        <div className={classes.content}>{children}</div>
+      </main>
+    </div>
   );
 }

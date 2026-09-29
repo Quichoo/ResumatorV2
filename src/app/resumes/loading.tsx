@@ -1,10 +1,13 @@
-import { Container } from "@mantine/core";
-import Loader from "@/components/ui/Loader";
+import ResumesPageShell from "@/components/resumes/ResumesPageShell";
+import ResumeListSkeleton from "@/components/resumes/ResumeListSkeleton";
 
 export default function ResumesLoading() {
   return (
-    <Container size="md" py="xl">
-      <Loader label="Loading resumes..." />
-    </Container>
+    <ResumesPageShell
+      title="My resumes"
+      description="Keep your resume versions organized for each opportunity."
+    >
+      <ResumeListSkeleton />
+    </ResumesPageShell>
   );
 }

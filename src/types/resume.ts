@@ -8,7 +8,7 @@ export type ValidatedResumeValues = z.output<typeof resumeSchema>;
 
 export type ResumeFieldErrors = FieldErrors<keyof ResumeFormValues>;
 
-export type ResumeListItem = {
+type ResumeSummary = {
   id: string;
   title: string;
   targetRole: string;
@@ -16,7 +16,11 @@ export type ResumeListItem = {
   updatedAt: string;
 };
 
-export type ResumeDetails = ResumeListItem & {
+export type ResumeListItem = ResumeSummary & {
+  hasGeneratedDraft: boolean;
+};
+
+export type ResumeDetails = ResumeSummary & {
   jobDescription: string;
   createdAt: string;
 };

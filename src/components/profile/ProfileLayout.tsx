@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { IconFileText, IconMail, IconUser } from "@tabler/icons-react";
-import { AppLink } from "@/components/ui/AppLink";
+import AppNavigation from "@/components/ui/AppNavigation";
 import SignOutButton from "@/components/auth/SignOutButton";
 import Brand from "@/components/ui/Brand";
 import classes from "./ProfileLayout.module.css";
@@ -25,6 +25,9 @@ export default function ProfileLayout({ user, children }: ProfileLayoutProps) {
       <header className={classes.header}>
         <div className={classes.headerInner}>
           <Brand className={classes.brand} />
+          <div className={classes.headerNavigation}>
+            <AppNavigation active="profile" />
+          </div>
 
           <div className={classes.account}>
             <div className={classes.accountIdentity}>
@@ -96,10 +99,6 @@ export default function ProfileLayout({ user, children }: ProfileLayoutProps) {
           {children}
         </section>
       </main>
-      <nav aria-label="Resume navigation" className={classes.navigation}>
-        <AppLink href="/resumes">My resumes</AppLink>
-        <span aria-current="page">Master profile</span>
-      </nav>
     </div>
   );
 }
