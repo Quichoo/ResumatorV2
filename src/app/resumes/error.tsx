@@ -24,7 +24,7 @@ export default function ResumesError({ reset }: ResumesErrorProps) {
           </Button>
 
           <Button component={Link} href="/profile" variant="default">
-            Back to profile
+            Back to Profile
           </Button>
         </Group>
       </Stack>
