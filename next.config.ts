@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withEve } from "eve/next";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -9,4 +10,4 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["unpdf"],
 };
 
-export default nextConfig;
+export default withEve(nextConfig);
